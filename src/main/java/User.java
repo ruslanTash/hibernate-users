@@ -1,6 +1,7 @@
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ToString
@@ -22,6 +23,8 @@ public class User {
     private String name;
     private String login;
     private String password;
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private LocalDateTime created;
+    private LocalDateTime modified;
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Functional> functionals;
 }

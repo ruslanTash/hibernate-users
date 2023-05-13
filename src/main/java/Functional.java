@@ -18,7 +18,12 @@ public class Functional {
     private int functionalId;
     @Column(name = "functional")
     private String functional;
-    @OneToMany(mappedBy = "functional", orphanRemoval = true, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "user_function",
+            joinColumns = @JoinColumn(name = "functional_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> users;
 
     public Functional(String functional) {
