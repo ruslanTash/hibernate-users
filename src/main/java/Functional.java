@@ -1,4 +1,7 @@
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,13 +21,10 @@ public class Functional {
     private int functionalId;
     @Column(name = "functional")
     private String functional;
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "user_function",
-            joinColumns = @JoinColumn(name = "functional_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> users;
+
+    @ManyToMany(mappedBy = "functionalList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<User> userList;
 
     public Functional(String functional) {
         this.functional = functional;
