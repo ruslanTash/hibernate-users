@@ -11,10 +11,10 @@ public interface UserDAO {
     List<User> getUserByFunc(Functional functional);
 
     //    Удалять пользователя в БД;
-    void deleteUserById(int userId);
+    void deleteUserById(User user);
 
     //    Добавлять нового пользователя с ролями в БД;
-    void createUser(User user);
+    void createUser(User user, List<Functional> functionalList );
 
     //    Редактировать существующего пользователя в БД.
     void updateUser(User user, int userId);

@@ -1,11 +1,9 @@
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
 
-@ToString
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,11 +20,18 @@ public class Functional {
     @Column(name = "functional")
     private String functional;
 
-    @ManyToMany(mappedBy = "functionalList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SUBSELECT)
+    @ManyToMany(mappedBy = "functionalList")
     private List<User> userList;
 
     public Functional(String functional) {
         this.functional = functional;
+    }
+
+    @Override
+    public String toString() {
+        return "Functional{" +
+                "functionalId=" + functionalId +
+                ", functional='" + functional + '\'' +
+                '}';
     }
 }

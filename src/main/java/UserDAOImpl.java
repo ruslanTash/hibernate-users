@@ -1,5 +1,6 @@
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO{
@@ -8,10 +9,10 @@ public class UserDAOImpl implements UserDAO{
         EntityManager entityManager = HibernateUtil.getEntityManager();
         String sql = "SELECT e FROM User e";
         TypedQuery<User> query = entityManager.createQuery(sql, User.class);
-        List<User> users = query.getResultList();
+        List<User> userList = query.getResultList();
         entityManager.getTransaction().commit();
         entityManager.close();
-        return users;
+        return userList;
     }
 
     @Override
@@ -35,16 +36,18 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
-    public void deleteUserById(int userId) {
+    public void deleteUserById(User user) {
         EntityManager entityManager = HibernateUtil.getEntityManager();
-        entityManager.remove(entityManager.find(User.class, userId));
+        User userForDelete = entityManager.find(User.class, user.getUserId());
+        entityManager.remove(userForDelete);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
 
     @Override
-    public void createUser(User user) {
+    public void createUser(User user, List<Functional> functionalList) {
         EntityManager entityManager = HibernateUtil.getEntityManager();
+        user.setFunctionalList(functionalList);
         entityManager.persist(user);
         entityManager.getTransaction().commit();
         entityManager.close();
@@ -53,8 +56,12 @@ public class UserDAOImpl implements UserDAO{
     @Override
     public void updateUser(User user, int userId) {
         EntityManager entityManager = HibernateUtil.getEntityManager();
-        user.setUserId(userId);
-        entityManager.merge(user);
+        User userForUpdate = entityManager.find(User.class, userId);
+        userForUpdate.setName(user.getName());
+        userForUpdate.setLogin(user.getLogin());
+        userForUpdate.setPassword(user.getPassword());
+        userForUpdate.setModified(LocalDateTime.now());
+        entityManager.merge(userForUpdate);
         entityManager.getTransaction().commit();
         entityManager.close();
     }

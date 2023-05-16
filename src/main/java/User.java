@@ -1,18 +1,18 @@
+import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@ToString
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
+
 
 @Entity
 @Table(name = "users")
@@ -22,24 +22,42 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
+    @NotNull
     private int userId;
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String name;
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String login;
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String password;
     @Column(name = "data_creation")
-    private LocalDateTime created;
+    private LocalDateTime created = LocalDateTime.now();
     @Column(name = "data_modification")
     private LocalDateTime modified;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SUBSELECT)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
-            name = "functional",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "functional_id")
+            name = "Users_Functional",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "functional_id")}
     )
-    private List<Functional> roleList;
+    private List<Functional> functionalList;
+
+    public User(String name, String login, String password) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", login='" + login + '\'' +
+                ", functionalList=" + functionalList +
+                '}';
+    }
 }
