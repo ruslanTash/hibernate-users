@@ -25,14 +25,13 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
-    public List<User> getUserByFunc(Functional functional) {
+    public List<User> getUserByFunc(int funcId) {
         EntityManager entityManager = HibernateUtil.getEntityManager();
-        String sql = "SELECT e FROM User e";
-        TypedQuery<User> query = entityManager.createQuery(sql, User.class);
-        List<User> users = query.getResultList();
+        Functional funcs = entityManager.find(Functional.class, funcId);
+        List<User> usersByFuncional =  funcs.getUserList();
         entityManager.getTransaction().commit();
         entityManager.close();
-        return users;
+        return usersByFuncional;
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface UserDAO {
     User getUserById(int userId);
 
     //    Получать список пользователей по конкретной роли;
-    List<User> getUserByFunc(Functional functional);
+    List<User> getUserByFunc(int funcId);
 
     //    Удалять пользователя в БД;
     void deleteUserById(User user);

@@ -34,7 +34,7 @@ public class Application {
 //        Получать конкретного пользователя (с его ролями) из БД;
         System.out.println(userDAO.getUserById(1));
 //        Получать список пользователей по конкретной роли;
-        userDAO.getUserByFunc(f1).forEach(System.out::println);
+        userDAO.getUserByFunc(1).forEach(System.out::println);
 //        Удалять пользователя в БД;
         userDAO.deleteUserById(user3);
 //        Добавлять нового пользователя с ролями в БД;
@@ -42,6 +42,6 @@ public class Application {
 //        Редактировать существующего пользователя в БД.
         userDAO.updateUser(new User("Zmey", "Gorinich", "7777"), 3);
 
-        userDAO.getAllUsers().forEach(System.out::println);
+
     }
 }
